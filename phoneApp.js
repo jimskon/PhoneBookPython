@@ -48,18 +48,20 @@ function changeOperation(operation){
 
 // Build output table from comma delimited list
 function buildTable(list) {
-    var a = list.split(",");
-    if (a.length < 1) {
+    //    var a = list.split(",");
+    rows=JSON.parse(list);
+    if (rows.length < 1) {
 	return "<h3>Internal Error</h3>";
-    } else if (a.length == 1) {
+    } else if (rows.length == 1) {
 	return "<h3>Nothing Found</h3>";
     } else {
 	var result = '<table class="w3-table-all w3-hoverable" border="2"><tr><th>First</th><th>Last</th><th>Phone</th><th>Type</th><th>Action</th><tr>';
-	var aLen = a.length;
-	for (var i = 1; i < aLen; i+=5) {
-	    result += "<tr><td class='first'>"+a[i]+"</td><td class='last'>"+a[i+1]+"</td><td class='phone'>"+a[i+2]+"</td><td class='type'>"+a[i+3]+"</td>";
-	    result += "<td><button type='button' ID='"+a[i+4]+"' class='btn btn-primary btn-sm edit'>Edit</button> ";
-	    result += "<button type='button' ID='"+a[i+4]+"' class='btn btn-primary btn-sm delete'>Delete</button></td></tr>";
+	for (i=0;i<rows.length;i++) {
+	    row=rows[i];
+	    console.log("row:",row);
+	    result += "<tr><td class='first'>"+row[0]+"</td><td class='last'>"+row[1]+"</td><td class='phone'>"+row[2]+"</td><td class='type'>"+row[3]+"</td>";
+	    result += "<td><button type='button' ID='"+row[4]+"' class='btn btn-primary btn-sm edit'>Edit</button> ";
+	    result += "<button type='button' ID='"+row[4]+"' class='btn btn-primary btn-sm delete'>Delete</button></td></tr>";
 	}
 	result += "</table>";
 	

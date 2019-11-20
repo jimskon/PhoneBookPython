@@ -3,7 +3,8 @@
 # James Skon, 2019
 #!/usr/bin/env python
 
-import cgi;
+import json
+import cgi
 import cgitb
 cgitb.enable()
 # the following causes a message to be written in /tmp if the python program fails
@@ -77,19 +78,6 @@ class phoneBook:
       self.mydb.close()
     return ("success")
            
-def printResults(results):
-  print("Success,",end="")
-  first=True
-  for row in results:
-    for field in row:
-      if first:
-        first = False
-      else:
-        print(",",end="",sep="")
-      print(field,end="",sep="")
-  print()
-  return
-
 def fixAttr(s):
   # fix missing attribute by converting to empty string 
   if s==None:
@@ -116,13 +104,13 @@ def main():
       search=""
     if "Last" in operation:
       pbResults=pb.findByLast(search)
-      printResults(pbResults)
+      print(json.dumps(pbResults))
     elif "First" in operation:
       pbResults=pb.findByFirst(search)
-      printResults(pbResults)
+      print(json.dumps(pbResults))
     elif "Type" in operation:
       pbResults=pb.findByType(search)
-      printResults(pbResults)
+      print(json.dumps(pbResults))
     elif "Add" in operation:
       first=form.getvalue("afname")
       last=form.getvalue("alname")
@@ -133,7 +121,7 @@ def main():
       phone=fixAttr(phone)
       ptype=fixAttr(ptype)
       pbResults=pb.addEntry(first,last,phone,ptype)
-      printResults(pbResults)
+      print(json.dumps(pbResults))
     elif "edit" in operation:
       idnum=form.getvalue("editid")
       first=form.getvalue("editfname")
@@ -144,12 +132,12 @@ def main():
       last=fixAttr(last)
       phone=fixAttr(phone)
       ptype=fixAttr(ptype)
-      pbResults=pb.editEntry(idnum,first,last,phone,ptype)
       printResults(pbResults)
+      print(json.dumps(pbResults))
     elif "delete" in operation:
       rid=form.getvalue("deleteid")
       pbResults=pb.delete(rid)
-      printResults(pbResults)
+      print(json.dumps(pbResults))
     else:
       printResults("Error,Bad command:"+operation)
       #l.write("Error,Bad command:"+operation)
