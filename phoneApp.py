@@ -2,84 +2,20 @@
 # namelookup.py - Program to display name statistics
 # James Skon, 2019
 #!/usr/bin/env python
-
+import sys
 import json
 import cgi
 import cgitb
-cgitb.enable()
-# the following causes a message to be written in /tmp if the python program fails
-cgitb.enable(display=0, logdir="/tmp")
+#cgitb.enable()
+# the following causes a message to be written in /fifo if the python program fails
+cgitb.enable(display=0, logdir="/fifo")
 
+sys.path.insert(1, '/home/skon/PhoneBookPython/')
 
-import mysql.connector
+from phoneBook import phoneBook
 
-class phoneBook:
-  '''
-  A class for interfacing with a mysql database
-  '''
-  def __init__(self):
-    '''
-    Create a connection to the database
-    '''
-    HOST = "localhost"
-    USER = "skon"
-    DB = "PhoneAppDB"
-    PASS="PhilanderChase"
-    self.mydb = mysql.connector.connect(
-      host=HOST,
-      user=USER,
-      passwd=PASS,
-      database=DB
-    )
-    return
-
-  def findByLast(self,last):
-    mycursor = self.mydb.cursor()
-    mycursor.execute("SELECT * FROM Phonebook WHERE Last like '%"+last+"%'");
-    myresult = mycursor.fetchall()
-    return(myresult)
-           
-  def findByFirst(self,first):
-    mycursor = self.mydb.cursor()
-    mycursor.execute("SELECT * FROM Phonebook WHERE First like '%"+first+"%'");
-    myresult = mycursor.fetchall()
-    return(myresult)
-           
-  def delete(self,idnum):
-    mycursor = self.mydb.cursor()
-    try:
-      mycursor.execute("DELETE FROM Phonebook WHERE ID='"+idnum+"'")
-      self.mydb.commit()
-    except Exception as e:
-      return "Error,"+ str(e)
-    finally:
-      self.mydb.close()
-    return ("success")
-           
-  def addEntry(self,first,last,phone,ptype):
-    mycursor = self.mydb.cursor()
-    try:
-      mycursor.execute("INSERT INTO Phonebook(First,Last,Phone,Type) VALUES ('"+first+"','"+last+"','"+phone+"','"+ptype+"')")
-      self.mydb.commit()
-    except Exception as e:
-      return "Error,"+ str(e)
-    finally:
-      self.mydb.close()
-    return ("success")
-           
-  def editEntry(self,idnum,first,last,phone,ptype):
-    mycursor = self.mydb.cursor()
-    try:
-      mycursor.execute("UPDATE Phonebook SET First = '"+first+"', Last ='"+last+"', Phone ='"+phone+"', Type ='"+ptype+"' WHERE ID='"+idnum+"'")
-      self.mydb.commit()
-    except Exception as e:
-      return "Error,"+ str(e)
-    finally:
-      self.mydb.close()
-    return ("success")
-           
 def fixAttr(s):
-  # fix missing attribute by converting to empty string 
+  # fix missing attribute by converting to empty string
   if s==None:
     return("")
   return(s)
@@ -90,7 +26,7 @@ def printHeader():
 def main():
   printHeader()
   # the following allow debug messages to be written into /tmp
-  #l=open("/tmp/skon.log","a")
+  #l=open("/fifo/skon.log","a")
   #l.write("Test Message:")
   pb=phoneBook()
   form = cgi.FieldStorage()
@@ -132,17 +68,18 @@ def main():
       last=fixAttr(last)
       phone=fixAttr(phone)
       ptype=fixAttr(ptype)
-      printResults(pbResults)
+      pbResults=pb.editEntry(idnum,first,last,phone,ptype)
+      print(pbResults)
       print(json.dumps(pbResults))
     elif "delete" in operation:
       rid=form.getvalue("deleteid")
       pbResults=pb.delete(rid)
       print(json.dumps(pbResults))
     else:
-      printResults("Error,Bad command:"+operation)
+      print("Error,Bad command:"+operation)
       #l.write("Error,Bad command:"+operation)
     #l.close()
   else:
     print("Error in submission")
-        
+
 main()
