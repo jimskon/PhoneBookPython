@@ -8,7 +8,7 @@ import cgi
 import cgitb
 #cgitb.enable()
 # the following causes a message to be written in /fifo if the python program fails
-cgitb.enable(display=0, logdir="/fifo")
+cgitb.enable(display=0, logdir="/home/fifo")
 
 sys.path.insert(1, '/home/skon/PhoneBookPython/')
 
@@ -26,7 +26,7 @@ def printHeader():
 def main():
   printHeader()
   # the following allow debug messages to be written into /tmp
-  #l=open("/fifo/skon.log","a")
+  #l=open("/home/fifo/skon.log","a")
   #l.write("Test Message:")
   pb=phoneBook()
   form = cgi.FieldStorage()
