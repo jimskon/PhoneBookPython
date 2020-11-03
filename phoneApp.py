@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # namelookup.py - Program to display name statistics
 # James Skon, 2019
-#!/usr/bin/env python
 import sys
 import json
 import cgi
@@ -26,8 +25,8 @@ def printHeader():
 def main():
   printHeader()
   # the following allow debug messages to be written into /tmp
-  #l=open("/home/fifo/skon.log","a")
-  #l.write("Test Message:")
+  l=open("/home/fifo/skon.log","a")
+  l.write("Test Message:")
   pb=phoneBook()
   form = cgi.FieldStorage()
   if (form.getvalue("operation")):
@@ -78,7 +77,7 @@ def main():
     else:
       print("Error,Bad command:"+operation)
       #l.write("Error,Bad command:"+operation)
-    #l.close()
+    l.close()
   else:
     print("Error in submission")
 
