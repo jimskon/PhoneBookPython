@@ -9,6 +9,7 @@ import cgitb
 # the following causes a message to be written in /fifo if the python program fails
 cgitb.enable(display=0, logdir="/home/fifo")
 
+# Must be of form  '/home/student/username/PhoneBookPython/' for students
 sys.path.insert(1, '/home/skon/PhoneBookPython/')
 
 from phoneBook import phoneBook
