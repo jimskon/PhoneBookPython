@@ -9,7 +9,7 @@ import cgitb
 # the following causes a message to be written in /fifo if the python program fails
 cgitb.enable(display=0, logdir="/home/fifo")
 
-# Must be of form  '/home/student/username/PhoneBookPython/' for students
+# Must be of form  '/home/students/username/PhoneBookPython/' for students
 sys.path.insert(1, '/home/skon/PhoneBookPython/')
 
 from phoneBook import phoneBook
@@ -26,13 +26,14 @@ def printHeader():
 def main():
   printHeader()
   # the following allow debug messages to be written into /tmp
-  l=open("/home/fifo/skon.log","a")
-  l.write("Test Message:")
+  # If you use, change file name to your username.
+  #l=open("/home/fifo/skon.log","a")
+  #l.write("Test Message:")
   pb=phoneBook()
   form = cgi.FieldStorage()
   if (form.getvalue("operation")):
     operation=form.getvalue("operation")
-    #l.write("op:"+operation)
+    #]write("op:"+operation)
     search=form.getvalue("find")
     # Fix Null search parameter
     search=fixAttr(search)
@@ -78,7 +79,7 @@ def main():
     else:
       print("Error,Bad command:"+operation)
       #l.write("Error,Bad command:"+operation)
-    l.close()
+    #l.close()
   else:
     print("Error in submission")
 
