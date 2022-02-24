@@ -14,9 +14,9 @@ PutCGI:
 	ls -l /usr/lib/cgi-bin/
 
 PutHTML:
-	cp phoneApp.html /var/www/html/class/softdev/$(USER)/PhoneAppPython/
-	cp phoneApp.css /var/www/html/class/softdev/$(USER)/PhoneAppPython/
-	cp phoneApp.js /var/www/html/class/softdev/$(USER)/PhoneAppPython/
+	cp phoneApp.html /var/www/html/class/ssd/$(USER)/PhoneAppPython/
+	cp phoneApp.css /var/www/html/class/ssd/$(USER)/PhoneAppPython/
+	cp phoneApp.js /var/www/html/class/ssd/$(USER)/PhoneAppPython/
 
 	echo "Current contents of your HTML directory: "
-	ls -l /var/www/html/class/softdev/$(USER)/PhoneAppPython/
+	ls -l /var/www/html/class/ssd/$(USER)/PhoneAppPython/
